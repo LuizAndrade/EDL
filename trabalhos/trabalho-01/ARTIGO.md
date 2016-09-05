@@ -30,7 +30,6 @@
     * Perl possui o CPAN(Comprehensive Perl Archive Network), onde a comunidade interage criando e distribuindo diversos módulos grátis. Existe desde 1995 e continua crescendo até hoje. *"You can never have too many Perl modules"*
 
 ## Avaliação Comparativa
-
 #### Sequencia de Fibonacci em Perl
 ```
 #!/usr/bin/perl
@@ -40,9 +39,9 @@
 
 use strict;
 use warnings;
-# Estes dois comandos acima servem para servir de "aviso" ao compilador,
+# Estes dois comandos acima servem de "aviso" ao interpretador,
 # onde qualquer erro ou provável erro devem ser tratado como erro e impedir a compilação.
-# Retirar qualquer  um dos dois comandos é considerado uma
+# Retirar qualquer um dos dois comandos é considerado uma
 # má pratica de programação Perl.
 
 # Functions em Perl são chamadas de subrotinas.
@@ -90,16 +89,34 @@ sub fibonacci {
 
 main;
 ```
+
 #### Sequencia de Fibonacci em Perl, porém com outra solução
 ```
-
+# Repetindo o uso de strict e warnings como boa prática.
 use strict;
 use warnings;
 
 sub make_fibonnaci {
+
+  # Nessa declaração, é utilizada a atribuiçao múltipla.
+  # Neste caso, seria o mesmo do que declarar:
+  # my $current = 0;
+  # my $next = 1;
+
     my ( $current, $next ) = ( 0, 1 );
+
+    # Uso de funções anônimas, ou seja, funções que nao possuem nomes
+    # declarados, são executadas em tempo de execução e possuem escopo
+    # local, tornando-as mais rapidas e com uso de memória menor do que
+    # definir uma nova subrotina.
+
     return sub {
         my $fibonacci = $current;
+
+        # Utilizando a mesma ideia que a primeira declaração, onde:
+        # $current = $next;
+        # $next = $current + next;
+
         ( $current, $next ) = ( $next, $current + $next );
         return $fibonacci;
     };
@@ -108,7 +125,10 @@ sub make_fibonnaci {
 # a eficiencia da programação funcional.
 my $iterator = make_fibonnaci();
 
+
 for ( 1 .. 10 ) {
+  # Como definimos anteriormente a variavel $iterator agora faz referência
+  # à subrotina make_fibonnaci, com isso, precisamos chamar o método com o "->".
     my $fibonacci = $iterator->();
     print "$fibonacci\n";
 }
@@ -149,16 +169,15 @@ int main()
 
 * Readability:
 
-  C possui uma sintaxe mais simples do que Perl, pois com tipagem estatica fica mais facil de compreender os comandos, todavia, mesmo que as variáveis em Perl sejam começadas sempre por $ e alguns comandos causem estranheza ao programador iniciante, ambas linguagens possuem boa readability.
+  A primeira vista, Perl pode se tornar algo desagrável para ler, pois com sua diversas influencias, trouxe aspectos mais variaveis para a linguagem, deixando-a única e assim, mais complexa, todavia C aparenta uma linguagem muito mais simples, por conta de sua tipagem estática e programação imperativa, mas no fim ambas linguagens possuem uma boa readability.
 
-* Writeability:
+* Writability:
 
-  Perl sofre em writeability, pois com suas influências em outras linguagens, retirando de cada uma um aspecto diferente e junto da tipagem dinâmica, causa uma confusão maior ao programador, já C que também sofre em alguns aspectos possui uma compreensão maior, pois novamente com a tipagem estática e programação imperativa a escrita se torna bem menos complexa.
-
+  Perl possui uma sintaxe mais complexa do que C, pois com a tipagem dinamica, o uso de $, escopo léxico e subrotinas que podem ser atribuidas à variaveis, podem causar confusões para maioria dos programadores, já em C com sua sintaxe mais básica é mais "user friendly", o que deixa mais fácil a sua escrita.
 
 * Expressividade:
 
-  Ambas as linguagens possuem expressividade, no entanto, Perl se supera a C, pois Perl consegue realizar tudo que C almeja e ainda mais um pouco, por ser uma linguagem funcional, possuir orientação a objetos, e etc.
+  Ambas as linguagens possuem expressividade, no entanto, Perl se supera a C, pois Perl sendo uma linguagem multiparadigma, possui um "raio de ação" mais abrangente do que em C, nos códigos anteriores, uma soluçao em Perl trazia um código estruturado, mais proximo a C, enquanto a segunda solução já apresentava soluções funcionais e orientação a objetos, se afastando de C. No fim, a comparação, ao meu ver, entre as duas linguagens se torna: "Tudo que C faz, Perl também consegue, mas nem tudo que Perl faz, C consegue replicar".
 
 ## Conclusão
 
