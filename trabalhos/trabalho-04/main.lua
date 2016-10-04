@@ -30,19 +30,16 @@ winGame = false
 --Nome: Variável "winGame" 
 --Propriedade: Endereço
 --Binding Time: Compile Time
---Explicação: A variável "winGame" somente é criado 
---            e armazenado na memoria no momento
---            que o código for compilado.
+--Explicação: A variável "winGame" é global e com valor já atribuido,
+--            seu espaço na memória será alocada em tempo de compilação.
+--            
+--            
+--            
 
 -------------[[ funções principais ]]--------------
 
 function love.load () -- ibagens
-  --Nome: Função "love.load()"   
-  --Propriedade: Implementação de função
-  --Binding Time: Compile
-  --Explicação: Quando o código for compilado,
-  --            a função será criada e
-  --            alocada na memória.
+
   
   if arg[#arg] == "-debug" then require("mobdebug").start() end
 
@@ -104,12 +101,14 @@ function love.update(dt)
 
   for i, enemy in ipairs(enemies) do
     
-  --Nome: "for i, enemy in ipairs(enemies) do"
-  --Propriedade: Definição de loop
+  --Nome: "ipairs"
+  --Propriedade: Sintaxe
   --Binding Time: Language Design Time
-  --Explicação: Definição de um loop indexado, logo, percorre
-  --            somente os índices numerados do elemento em questao
-  --            no caso um array.
+  --Explicação: Dado que "ipairs" é uma palavra reservada de Lua, sua
+  --            amarração somente poderia ser feita em tempo de design.
+  --            Para a utilização do "ipairs" deve ser respeitadas regras atribuidas à linguagem
+  --            como o uso de "for" e "do".
+  --            
   
   	if CheckCollision(enemy.x, enemy.y, enemyW, enemyH, char.x, char.y, char.w, char.h)
   	and isAlive then
@@ -126,6 +125,15 @@ auxiliar.bg = function(numrows, numcols) -- texturas do fundo
   for row = 0, numrows do
     for col = 0, numcols do
       if row < 1 then
+        --Nome: Operador "<"
+        --Propriedade: Instrução de baixo nível
+        --Binding Time: Compile Time
+        --Explicação: A instrução de comparação realzia a comparação "a menor que b"
+        --            entre dois termos do mesmo tipo ou próximos ( int < int, string < string)
+        --            retornando um booleano dizendo se a condição é aceita.
+        --            Desta maneira, sua instrução é definida em tempo de compilação.
+        
+        
         love.graphics.draw(waterblock, col * 100, row * 80)
       elseif row < 3 then
         love.graphics.draw(stoneblock, col * 100, row * 80)
@@ -137,11 +145,11 @@ auxiliar.bg = function(numrows, numcols) -- texturas do fundo
 end
 
 auxiliar.teclado = function(dt) -- movimentos possiveis do jogador
---Nome: "auxiliar.teclado = function(dt)"         
---Propriedade:  Endereço de função
+--Nome: "auxiliar.teclado"         
+--Propriedade:  Endereço
 --Binding Time: Run Time
---Explicação: Alocando a função na tabela "auxiliar",
---            seu endereço é determinado em tempo de execução.
+--Explicação: Quando a função "teclado" for criada, seu endereço será alocado na
+--            tabela "auxiliar" em tempo de execução.
 
   if love.keyboard.isDown('escape') then
     love.event.push('quit')
@@ -152,13 +160,15 @@ auxiliar.teclado = function(dt) -- movimentos possiveis do jogador
   end
 
   if not winGame then
-  --Nome: "if not winGame then" 
-  --Propriedade: Definição de bloco de controle
+  --Nome: "if" 
+  --Propriedade: Sintaxe
   --Binding Time: Language Design Time
-  --Explicação: Em Lua, toda utilização do "if" é acompanhada de "then",
-  --            facilitando a compreensão do programador no
-  --            termino do controle, em tradução livre: 
-  --            "se condição for aceita, então"
+  --Explicação: Como em Lua, "if" é uma palavra reservada à linguagem, sua amarração
+  --            é feita em tempo de design.
+  --            Para o uso do "if" é necessário respeitar regras já impostas na linguagem, como a
+  --            utilização de "then" e "end". Caso não seja respeitada o interpretador retornará
+  --            um erro, impedindo a compilação.
+  --
     
     
     if love.keyboard.isDown('a', 'left')then
@@ -196,13 +206,13 @@ auxiliar.fonte = function() --
     "ABCDEFGHIJKLMNOPQRSTUVWXYZ0" ..
     "123456789.,!?-+/():;%&`'*#=[]\"")
   
-  --Nome: Variavel "local font"
+  --Nome: Variavel "font"
   --Propriedade: Valor
   --Binding Time: Run Time
-  --Explicação: "font" é uma variável local da função
-  --            "auxiliar.fonte", com isso, a variável somente
-  --            será criada em tempo de execução e quando a função
-  --            for chamada.
+  --Explicação: Como "font" é uma variável local e somente é criada e
+  --            atribuida quando a função for chamada, seu valor será
+  --            determinada em tempo de execução.
+  --            
   
   love.graphics.setFont(font)
 end
