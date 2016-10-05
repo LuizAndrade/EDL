@@ -101,13 +101,13 @@ function love.update(dt)
 
   for i, enemy in ipairs(enemies) do
     
-  --Nome: "ipairs"
+  --Nome: "for"
   --Propriedade: Sintaxe
   --Binding Time: Language Design Time
-  --Explicação: Dado que "ipairs" é uma palavra reservada de Lua, sua
+  --Explicação: Dado que "for" é uma palavra reservada de Lua, sua
   --            amarração somente poderia ser feita em tempo de design.
-  --            Para a utilização do "ipairs" deve ser respeitadas regras atribuidas à linguagem
-  --            como o uso de "for" e "do".
+  --            Para a utilização do "for" deve ser respeitadas regras atribuidas à linguagem
+  --            como o uso de "then" e "do".
   --            
   
   	if CheckCollision(enemy.x, enemy.y, enemyW, enemyH, char.x, char.y, char.w, char.h)
@@ -115,6 +115,13 @@ function love.update(dt)
   		table.remove(enemies, i)
   		isAlive = false
       deaths = deaths + 1
+	 --Nome: Operador "+"
+        --Propriedade: Instrução de baixo nível
+        --Binding Time: Compile Time
+        --Explicação: A instrução de adição varia dependendo dos tipos
+        --            entre dois operandos (e.g int, float, long, entre outros).
+        --            Desta maneira, a instrução é definida em tempo de compilação.
+        
   	end
   end
 end
@@ -125,15 +132,6 @@ auxiliar.bg = function(numrows, numcols) -- texturas do fundo
   for row = 0, numrows do
     for col = 0, numcols do
       if row < 1 then
-        --Nome: Operador "<"
-        --Propriedade: Instrução de baixo nível
-        --Binding Time: Compile Time
-        --Explicação: A instrução de comparação realzia a comparação "a menor que b"
-        --            entre dois termos do mesmo tipo ou próximos ( int < int, string < string)
-        --            retornando um booleano dizendo se a condição é aceita.
-        --            Desta maneira, sua instrução é definida em tempo de compilação.
-        
-        
         love.graphics.draw(waterblock, col * 100, row * 80)
       elseif row < 3 then
         love.graphics.draw(stoneblock, col * 100, row * 80)
