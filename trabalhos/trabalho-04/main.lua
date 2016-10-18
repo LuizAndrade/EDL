@@ -116,7 +116,7 @@ function love.update(dt)
   		isAlive = false
       deaths = deaths + 1
 	 --Nome: Operador "+"
-        --Propriedade: Instrução de baixo nível
+        --Propriedade: Valor da Instrução de baixo nível
         --Binding Time: Compile Time
         --Explicação: A instrução de adição varia dependendo dos tipos
         --            entre dois operandos (e.g int, float, long, entre outros).
