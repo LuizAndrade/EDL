@@ -1,3 +1,6 @@
+--
+--Feito por Alline Coelho e Luiz Andrade
+--
 local auxiliar = {}
 
 --trab06
