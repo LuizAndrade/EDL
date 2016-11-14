@@ -49,8 +49,7 @@ end
 
 local limite = {x1 = 100, x2 = 300, y1 = 100, y2 = 300 }
 local moveEneX = 200
-local moveEneY = 200
-local enemyState = 0 
+local moveEneY = 100
 
 
 -- trabalho 07
@@ -59,43 +58,25 @@ e1 = coroutine.create(function (x,y)
 
     while true do
     
-    if enemyState == 0 or enemyState == 4 then
-      moveEneX = moveEneX - x
-      if moveEneX < limite.x1 then
-        enemyState = 1
+      if moveEneX >= limite.x1 and moveEneY == limite.y1 then  
+        moveEneX = moveEneX - x
+        coroutine.yield()
+      
+      elseif moveEneY <= limite.y2 and moveEneX <= limite.x1 then
+        moveEneY = moveEneY + y
+        coroutine.yield()
+      
+      elseif moveEneX <= limite.x2 and moveEneY >= limite.y2 then
+        moveEneX = moveEneX + x
+        coroutine.yield()
+      
+      elseif moveEneY >= limite.y1 and moveEneX >= limite.x2 then
+        moveEneY = moveEneY - y
+        coroutine.yield()
+      
       end
-      coroutine.yield()
-    end
-    
-    if enemyState == 1 then
-      moveEneY = moveEneY + y
-      if moveEneY > limite.y2 then
-        enemyState = 2
-      end
-      coroutine.yield()
-    end
-    
-    if enemyState == 2 then
-      moveEneX = moveEneX + x
-      if moveEneX > limite.x2 then
-        enemyState = 3
-      end
-      coroutine.yield()
-    end
-    
-    if enemyState == 3 then
-      moveEneY = moveEneY - y
-      if moveEneY < limite.y1 then
-        enemyState = 4
-      end
-      coroutine.yield()
-    end
-    
-    if enemyState == 5 then
-      coroutine.yield()
-    end
   end
-  end)
+end)
 
 local deaths  = 0
 local isAlive = true
@@ -109,6 +90,7 @@ function love.load () -- ibagens
   
   -- trabalho 07
   -- criando o objeto "p1" e instanciando o ambiente
+  -- upvalues: x e y da função moveChar
   p1 = moveChar((love.graphics.getWidth() / 2) - 50,
                 (love.graphics.getHeight() - 150))
 
@@ -159,7 +141,7 @@ function love.update(dt)
   auxiliar.teclado(dt)
   
   -- trabalho 07
-  coroutine.resume(e1,(dt*20000),(dt*20000))
+  coroutine.resume(e1,(dt*10000),(dt*10000))
 
   createEnemyTimer = createEnemyTimer - (1 * dt) -- respawn
   if createEnemyTimer < 0 then
@@ -181,7 +163,6 @@ function love.update(dt)
   
   if CheckCollision(moveEneX, moveEneY, enemyW, enemyH, x, y, w, h)
   	and isAlive then
-  		enemyState = 5
   		isAlive = false
       deaths = deaths + 1
   end
@@ -253,7 +234,6 @@ auxiliar.wins = function() -- tela de vitoria
   love.graphics.setColor(255, 0, 0)
   enemies1 = {}
   enemies2 = {}
-  enemyState = 5
 end
 
 auxiliar.fonte = function() --
@@ -273,5 +253,4 @@ auxiliar.restart = function() -- pe lanza
   createEnemyTimer = createEnemyTimerMax
   isAlive = true
   winGame = false
-  enemyState = 0
 end
