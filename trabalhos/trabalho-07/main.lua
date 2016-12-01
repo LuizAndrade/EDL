@@ -54,30 +54,31 @@ local moveEneY = 100
 
 -- trabalho 07
 --criação da corotina para o movimento do inimigo
-e1 = coroutine.create(function (x,y)
-
+local function moveE1(x,y)
     while true do
     
-      if moveEneX >= limite.x1 and moveEneY == limite.y1 then  
+      while moveEneX >= limite.x1 and moveEneY <= limite.y1 do  
         moveEneX = moveEneX - x
         coroutine.yield()
+      end
       
-      elseif moveEneY <= limite.y2 and moveEneX <= limite.x1 then
+      while moveEneY <= limite.y2 and moveEneX <= limite.x1 do
         moveEneY = moveEneY + y
         coroutine.yield()
-      
-      elseif moveEneX <= limite.x2 and moveEneY >= limite.y2 then
+      end
+    
+      while moveEneX <= limite.x2 and moveEneY >= limite.y2 do
         moveEneX = moveEneX + x
         coroutine.yield()
-      
-      elseif moveEneY >= limite.y1 and moveEneX >= limite.x2 then
+      end
+    
+      while moveEneY >= limite.y1 and moveEneX >= limite.x2 do
         moveEneY = moveEneY - y
         coroutine.yield()
-      
       end
+    end
   end
-end)
-
+  
 local deaths  = 0
 local isAlive = true
 local winGame = false
@@ -89,10 +90,13 @@ function love.load () -- ibagens
   --music:play()
   
   -- trabalho 07
-  -- criando o objeto "p1" e instanciando o ambiente
-  -- upvalues: x e y da função moveChar
+  -- criando a closure e instanciando o ambiente.
+  -- upvalues: variaveis "x" e "y" de "moveChar"
+  
   p1 = moveChar((love.graphics.getWidth() / 2) - 50,
                 (love.graphics.getHeight() - 150))
+              
+  e1 = coroutine.create(moveE1)
 
   if arg[#arg] == "-debug" then require("mobdebug").start() end
 
