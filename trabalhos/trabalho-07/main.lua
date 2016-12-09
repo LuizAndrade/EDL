@@ -54,27 +54,23 @@ local moveEneY = 100
 
 -- trabalho 07
 --criação da corotina para o movimento do inimigo
-local function moveE1(x,y)
+local function moveE1()
     while true do
     
-      while moveEneX >= limite.x1 and moveEneY <= limite.y1 do  
-        moveEneX = moveEneX - x
-        coroutine.yield()
+      while (moveEneX > limite.x1 ) do 
+        coroutine.yield('left')
       end
       
-      while moveEneY <= limite.y2 and moveEneX <= limite.x1 do
-        moveEneY = moveEneY + y
-        coroutine.yield()
+      while (moveEneY < limite.y2  )do
+        coroutine.yield('down')
       end
     
-      while moveEneX <= limite.x2 and moveEneY >= limite.y2 do
-        moveEneX = moveEneX + x
-        coroutine.yield()
+      while (moveEneX < limite.x2 ) do
+        coroutine.yield('right')
       end
     
-      while moveEneY >= limite.y1 and moveEneX >= limite.x2 do
-        moveEneY = moveEneY - y
-        coroutine.yield()
+      while (moveEneY > limite.y1 ) do
+        coroutine.yield('up')
       end
     end
   end
@@ -96,7 +92,7 @@ function love.load () -- ibagens
   p1 = moveChar((love.graphics.getWidth() / 2) - 50,
                 (love.graphics.getHeight() - 150))
               
-  e1 = coroutine.create(moveE1)
+  e1 = coroutine.wrap(moveE1)
 
   if arg[#arg] == "-debug" then require("mobdebug").start() end
 
@@ -145,7 +141,14 @@ function love.update(dt)
   auxiliar.teclado(dt)
   
   -- trabalho 07
-  coroutine.resume(e1,(dt*10000),(dt*10000))
+  local mov = e1()
+  if       (mov == 'left')  then moveEneX = moveEneX - (dt*500)
+    elseif (mov == 'down')  then moveEneY = moveEneY + (dt*500)
+    elseif (mov == 'right') then moveEneX = moveEneX + (dt*500)
+    elseif (mov == 'up')    then moveEneY = moveEneY - (dt*500)
+  end
+
+  print(mov)
 
   createEnemyTimer = createEnemyTimer - (1 * dt) -- respawn
   if createEnemyTimer < 0 then
